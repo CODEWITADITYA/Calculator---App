@@ -1,13 +1,17 @@
 package com.example.calculatorapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.viewmodel.CreationExtras;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
+import com.google.android.gms.tflite.support.Empty;
 import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
     void assignID(MaterialButton btn, int id) {
 
         btn = findViewById(id);
@@ -62,12 +67,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         MaterialButton button = (MaterialButton) view;
         String buttonText = button.getText().toString();
-     // solutionTv.setText(buttonText);
-        String datatocalcute=solutionTv.getText().toString();
+        // solutionTv.setText(buttonText);
+        String datatocalcute = solutionTv.getText().toString();
 
         if (buttonText.equals("Cl")) {
             solutionTv.setText("");
             resultTv.setText("0");
+
             return;
         }
 
@@ -79,53 +85,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (buttonText.equals("Del")) {
 
-           datatocalcute=datatocalcute.substring(0,datatocalcute.length()-1);
-
-
-
+            datatocalcute = datatocalcute.substring(0, datatocalcute.length() - 1);
 
 
         } else {
 
 
-          // String datatocalcuate = solutionTv.getText().toString();
-           datatocalcute = datatocalcute + buttonText;
-           // solutionTv.setText(datatocalcute);
-           // String finalResult = getResult(datatocalcute);
+            // String datatocalcuate = solutionTv.getText().toString();
+            datatocalcute = datatocalcute + buttonText;
+            // solutionTv.setText(datatocalcute);
+            // String finalResult = getResult(datatocalcute);
 
-            }
+        }
+
         solutionTv.setText(datatocalcute);
-        String finalResult=getResult(datatocalcute);
-        if (!finalResult.equals("Err")){
+        String finalResult = getResult(datatocalcute);
+        if (!finalResult.equals("Err")) {
 
             resultTv.setText(finalResult);
-        }
-
-
-        }
-
-
-
-    String getResult(String data){
-
-        try{
-            Context context=Context.enter();
-            context.setOptimizationLevel(-1);
-
-            Scriptable scriptable=context.initStandardObjects();
-           String finalResult= context.evaluateString(scriptable,data,"Javascript",1,null).toString();
-           if(finalResult.endsWith(".0")){
-
-               finalResult=finalResult.replace(".0","");
-           }
-            return finalResult;
-
-        }catch (Exception e){
-            return "Err";
         }
 
 
 
 
     }
+
+
+    String getResult(String data) {
+
+        try {
+            Context context = Context.enter();
+            context.setOptimizationLevel(-1);
+
+            Scriptable scriptable = context.initStandardObjects();
+            String finalResult = context.evaluateString(scriptable, data, "Javascript", 1, null).toString();
+            if (finalResult.endsWith(".0")) {
+
+                finalResult = finalResult.replace(".0", "");
+            }
+            return finalResult;
+
+        } catch (Exception e) {
+            return "Err";
+        }
+    }
+
 }
+
+
+
+
